@@ -1,0 +1,23 @@
+version: "3.9"
+services:
+  db:
+  image: postgres
+  environment:
+    POSTGRES_USER: ${USER}
+    POSTGRES_PASSWORD: ${PASSWORD}
+    POSTGRES_DB: ${DATABASE}
+  ports:
+      - 5432:5432
+  restart: always
+
+app:
+  build: .
+  command: python3 run.py
+  ports:
+    - "${APP_PORT}:5000"
+  volumes:
+    - .:/app
+  links:
+    - db
+  depends_on:
+    - db
